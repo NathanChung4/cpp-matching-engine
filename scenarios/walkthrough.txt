@@ -1,0 +1,35 @@
+# A guided tour of price-time priority. Run: build/release/me ladder scenarios/walkthrough.txt
+# Prices are dollars with 2 decimals; quantities are shares. Each line is one order.
+
+# 1-4. Build a book: two asks at 100.05 (#1 arrived first), one at 100.07, one bid.
+limit sell 1 100.05 10
+limit sell 2 100.05 5
+limit sell 3 100.07 20
+limit buy  4 100.00 15
+
+# 5. A buy at 100.05 for 12: takes all of #1 (first in line), then 2 of #2. Partial fill.
+limit buy  5 100.05 12
+
+# 6. A buy that crosses two levels: 3 left at 100.05, then 100.07. The rest (7) rests at 100.07.
+limit buy  6 100.07 30
+
+# 7. A market sell sweeps the bids from the best down; what is left over expires.
+limit buy  7 99.98 10
+market sell 8 40
+
+# 8. Cancel a resting order, then try to cancel one that already filled (#1).
+limit sell 9 100.10 8
+cancel 9
+cancel 1
+
+# 9. Modify loses queue priority: #10 was first at 100.20, after the modify #11 is first.
+limit sell 10 100.20 5
+limit sell 11 100.20 5
+modify 10 100.20 5
+limit buy  12 100.20 5
+
+# 10. IOC takes what it can and never rests; FOK is all or nothing.
+ioc buy 13 100.25 9
+fok buy 14 100.30 50
+limit sell 15 100.30 40
+fok buy 16 100.30 40

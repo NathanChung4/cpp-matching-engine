@@ -1,0 +1,34 @@
+matching-engine benchmark
+  machine   Apple M3 Pro, 11 cores, 18 GiB, macOS 27.2.1 (Mac15,6)
+  compiler  AppleClang 21.0.0.21000401
+  flags     -O3 -DNDEBUG -std=c++20 -Wall -Wextra -Wpedantic -Werror (Release build)
+  timer     std::chrono::steady_clock, resolution 41.0 ns, overhead 13.3 ns per call
+  flow      seed 42, 1,000,000 orders: 47.0% limit, 6.0% market, 6.0% IOC, 4.0% FOK, 28.8% cancel, 8.0% modify, 0.2% invalid
+  checksum  0xb20da535686a3cc8 (1,130,769 events, 218,407 trades)
+  runs      1 warm-up + 5 timed (fresh book each run; latency from one extra timed pass)
+
+  | metric                     | value                          |
+  |----------------------------|--------------------------------|
+  | orders/sec (median)        | 30.44 M                        |
+  | orders/sec (min .. max)    | 30.31 M .. 34.05 M             |
+  | latency p50                | 42 ns                          |
+  | latency p90                | 84 ns                          |
+  | latency p99                | 166 ns                         |
+  | latency p99.9              | 250 ns                         |
+  | latency max                | 13458 ns                       |
+  | mean ns/order (throughput) | 32.9 ns                        |
+
+  per-order latency: one timestamp pair per order, so each reading is a whole number of
+  timer steps (41.0 ns) and includes about 13.3 ns of timer overhead
+  0 ns - 20 ns     ###################################      337,714
+  20 ns - 62 ns    ######################################## 381,637
+  62 ns - 102 ns   #########################                237,836
+  102 ns - 144 ns  ###                                      31,939
+  144 ns - 226 ns  #                                        9,819
+  226 ns - 348 ns                                           963
+  348 ns - 512 ns                                           46
+  512 ns - 1.0 us                                           5
+  1.0 us - 2.0 us                                           4
+  2.0 us - 4.9 us                                           18
+  4.9 us - 49 us                                            19
+  >= 49 us                                                  0

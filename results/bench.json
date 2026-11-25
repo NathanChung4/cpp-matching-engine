@@ -1,0 +1,32 @@
+{
+  "machine": "Apple M3 Pro, 11 cores, 18 GiB, macOS 27.2.1 (Mac15,6)",
+  "compiler": "AppleClang 21.0.0.21000401",
+  "flags": "-O3 -DNDEBUG -std=c++20 -Wall -Wextra -Wpedantic -Werror",
+  "build_type": "Release",
+  "seed": 42,
+  "orders": 1000000,
+  "warmup": 1,
+  "runs": 5,
+  "flow_mix": "47.0% limit, 6.0% market, 6.0% IOC, 4.0% FOK, 28.8% cancel, 8.0% modify, 0.2% invalid",
+  "checksum": "0xb20da535686a3cc8",
+  "events": 1130769,
+  "trades": 218407,
+  "timer": {"clock": "std::chrono::steady_clock", "resolution_ns": 41.00, "overhead_ns": 13.25},
+  "orders_per_sec": {"median": 30435108, "min": 30310072, "max": 34052165, "all": [30387478, 30435108, 30310072, 31382847, 34052165]},
+  "latency_ns": {"p50": 42.0, "p90": 84.0, "p99": 166.0, "p99.9": 250.0, "max": 13458.0, "mean": 41.92},
+  "ns_per_order_throughput": 32.86,
+  "histogram": [
+    {"lo_ns": 0, "hi_ns": 20, "label": "0 ns - 20 ns", "count": 337714},
+    {"lo_ns": 20, "hi_ns": 62, "label": "20 ns - 62 ns", "count": 381637},
+    {"lo_ns": 62, "hi_ns": 102, "label": "62 ns - 102 ns", "count": 237836},
+    {"lo_ns": 102, "hi_ns": 144, "label": "102 ns - 144 ns", "count": 31939},
+    {"lo_ns": 144, "hi_ns": 226, "label": "144 ns - 226 ns", "count": 9819},
+    {"lo_ns": 226, "hi_ns": 348, "label": "226 ns - 348 ns", "count": 963},
+    {"lo_ns": 348, "hi_ns": 512, "label": "348 ns - 512 ns", "count": 46},
+    {"lo_ns": 512, "hi_ns": 1004, "label": "512 ns - 1.0 us", "count": 5},
+    {"lo_ns": 1004, "hi_ns": 1988, "label": "1.0 us - 2.0 us", "count": 4},
+    {"lo_ns": 1988, "hi_ns": 4940, "label": "2.0 us - 4.9 us", "count": 18},
+    {"lo_ns": 4940, "hi_ns": 49220, "label": "4.9 us - 49 us", "count": 19},
+    {"lo_ns": 49220, "hi_ns": null, "label": ">= 49 us", "count": 0}
+  ]
+}

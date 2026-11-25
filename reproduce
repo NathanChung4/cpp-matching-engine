@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Reproduces every number in README.md and saves the raw output in results/:
+#   results/bench.txt, bench.json, latency_histogram.svg   (./bench, defaults)
+#   results/difftest.txt                                   (me difftest, 2,000,000 orders, seeds 1 and 7)
+#   results/replay.txt                                     (me replay on market-maker-sim's fills, if present)
+# Same seeds and flags give the same checksums, trades and difftest counts; the timings
+# vary from run to run (the README says by how much).
+set -euo pipefail
+cd "$(dirname "$0")"
+
+./bench --out results
+echo
+# A second, identical run: same checksum expected, timings within a few percent.
+./bench --out results/rerun > /dev/null
+echo "second run: $(grep -E '^  checksum|orders/sec \(median\)|latency p99 ' results/rerun/bench.txt | tr -s ' ' | tr '\n' ' ')"
+echo
+{
+  ./build/release/me difftest --orders 2000000 --seed 1
+  ./build/release/me difftest --orders 2000000 --seed 7
+} | tee results/difftest.txt
+echo
+mms="$HOME/Projects/market-maker-sim/results"
+if ls "$mms"/fills_*.csv > /dev/null 2>&1; then
+  ./build/release/me replay "$mms"/fills_*.csv --runs 50 | tee results/replay.txt
+else
+  echo "market-maker-sim results not found at $mms: results/replay.txt left as it was"
+fi

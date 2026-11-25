@@ -1,0 +1,2 @@
+difftest: seed 1: 2,000,000 orders, 431,042 trades, 2,258,787 events, 451 resting at the end: engine and reference agree on every event and on the final book
+difftest: seed 7: 2,000,000 orders, 430,549 trades, 2,258,585 events, 397 resting at the end: engine and reference agree on every event and on the final book

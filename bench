@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# One command for the benchmark:
+#   ./bench [--orders N] [--seed S] [--warmup W] [--runs R] [--out DIR]
+# Builds Release with CMake + Ninja, runs `me bench`, saves its output to DIR/bench.txt
+# and DIR/bench.json, and draws DIR/latency_histogram.svg (tools/histogram_svg.py,
+# standard library only). Defaults: 1,000,000 orders, seed 42, 1 warm-up, 5 runs, results/.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+out="results"
+pass=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --out)
+      [ $# -ge 2 ] || { echo "error: option '--out' needs a value" >&2; exit 2; }
+      out="$2"; shift 2 ;;
+    --orders|--seed|--warmup|--runs)
+      [ $# -ge 2 ] || { echo "error: option '$1' needs a value" >&2; exit 2; }
+      pass+=("$1" "$2"); shift 2 ;;
+    *) echo "error: unknown option '$1' (use --orders, --seed, --warmup, --runs, --out)" >&2; exit 2 ;;
+  esac
+done
+
+cmake -S . -B build/release -G Ninja -DCMAKE_BUILD_TYPE=Release > /dev/null
+cmake --build build/release --target me > /dev/null
+mkdir -p "$out"
+./build/release/me bench ${pass[@]+"${pass[@]}"} --json "$out/bench.json" | tee "$out/bench.txt"
+python3 -I tools/histogram_svg.py "$out/bench.json" "$out/latency_histogram.svg"
+echo
+echo "  wrote $out/bench.txt, $out/bench.json and $out/latency_histogram.svg"

@@ -1,0 +1,2 @@
+replay: 3 file(s), 4,187 fills, 8,374 orders, 4,187 trades, inventory matches
+replay: 6.40 M orders/sec (median of 50 timed replays; min 6.17 M, max 6.44 M; Release build)
